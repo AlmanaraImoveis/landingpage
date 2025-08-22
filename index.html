@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Casa Minha Vida - Análise de Crédito Gratuita</title>
+    <meta name="description" content="Realize o sonho da casa própria com o programa Minha Casa Minha Vida. Análise 100% online e sem compromisso.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <section class="header-section">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="header-title">Minha Casa Minha Vida</h1>
+                <p class="header-subtitle">Realize o sonho da casa própria com condições especiais de financiamento</p>
+                
+                <div class="badges-container">
+                    <span class="badge">✅ 100% Online</span>
+                    <span class="badge">✅ Sem Compromisso</span>
+                    <span class="badge">✅ Especialista no programa Minha Casa Minha Vida</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2 class="section-title">Vantagens do Programa Minha Casa Minha Vida</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🏠</div>
+                    <h3>Financiamento até 100% do valor do imóvel</h3>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Use seu FGTS como entrada</h3>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📊</div>
+                    <h3>Taxas de juros subsidiadas</h3>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Análise rápida e aprovação ágil</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="form-title">Solicite sua Análise de Crédito Gratuita</h2>
+                <p class="form-description">Preencha os dados abaixo e receba sua pré-aprovação em poucos minutos</p>
+                
+                <form id="creditForm" class="credit-form">
+                    <div class="form-group">
+                        <label for="nome" class="form-label">Nome Completo *</label>
+                        <input type="text" id="nome" name="nome" class="form-control" required>
+                        <span class="error-message" id="nomeError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="celular" class="form-label">Número do Celular (WhatsApp) *</label>
+                        <input type="tel" id="celular" name="celular" class="form-control" placeholder="(11) 99999-9999" required>
+                        <span class="error-message" id="celularError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo_renda" class="form-label">Tipo de Renda *</label>
+                        <select id="tipo_renda" name="tipo_renda" class="form-control" required>
+                            <option value="">Selecione seu tipo de renda</option>
+                            <option value="CLT">CLT</option>
+                            <option value="Autônomo">Autônomo</option>
+                            <option value="Aposentado">Aposentado</option>
+                            <option value="Servidor Público">Servidor Público</option>
+                        </select>
+                        <span class="error-message" id="tipo_rendaError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="renda" class="form-label">Renda Mensal Líquida *</label>
+                        <input type="text" id="renda" name="renda" class="form-control currency-input" placeholder="Ex: 4500.00" required>
+                        <span class="error-message" id="rendaError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fgts" class="form-label">Valor do FGTS Disponível *</label>
+                        <input type="text" id="fgts" name="fgts" class="form-control currency-input" placeholder="Ex: 25000.00" required>
+                        <span class="error-message" id="fgtsError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bairro" class="form-label">Bairro de Interesse *</label>
+                        <input type="text" id="bairro" name="bairro" class="form-control" placeholder="Ex: Vila Madalena, Copacabana..." required>
+                        <span class="error-message" id="bairroError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entrada" class="form-label">Valor Disponível para Entrada</label>
+                        <select id="entrada" name="entrada" class="form-control">
+                            <option value="">Selecione (opcional)</option>
+                            <option value="Não tenho">Não tenho</option>
+                            <option value="Até R$ 10.000">Até R$ 10.000</option>
+                            <option value="R$ 10.000 a R$ 30.000">R$ 10.000 a R$ 30.000</option>
+                            <option value="R$ 30.000 a R$ 50.000">R$ 30.000 a R$ 50.000</option>
+                            <option value="Acima de R$ 50.000">Acima de R$ 50.000</option>
+                        </select>
+                        <span class="error-message" id="entradaError"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--full-width submit-btn" id="submitBtn">
+                        <span class="btn-text">🚀 Solicitar Análise Gratuita</span>
+                        <span class="btn-loading hidden">
+                            <span class="loading-spinner"></span>
+                            Enviando...
+                        </span>
+                    </button>
+
+                    <p class="security-text">🔒 Seus dados estão 100% seguros e protegidos</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="social-proof">
+        <div class="container">
+            <h2 class="section-title">Mais de 5.000 famílias já realizaram o sonho da casa própria!</h2>
+            
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Consegui financiar minha casa em apenas 20 dias. Processo muito rápido e transparente!"</p>
+                    <p class="testimonial-author">- Ana Carolina, São Paulo</p>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Usei todo meu FGTS como entrada e ainda consegui condições especiais. Recomendo!"</p>
+                    <p class="testimonial-author">- Roberto Silva, Rio de Janeiro</p>
+                </div>
+
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Atendimento excelente e especializado. Me ajudaram em todo o processo."</p>
+                    <p class="testimonial-author">- Mariana Costa, Belo Horizonte</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Urgency Section -->
+    <section class="urgency-section">
+        <div class="container">
+            <div class="urgency-content">
+                <p class="urgency-text">⚡ <strong>ATENÇÃO:</strong> Condições especiais por tempo limitado!</p>
+                <p class="urgency-text">🏠 Garante já sua pré-aprovação e saia na frente na busca pelo imóvel ideal</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
