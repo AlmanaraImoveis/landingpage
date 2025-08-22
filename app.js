@@ -1,6 +1,6 @@
 // Configuração da aplicação
 const appConfig = {
-    whatsappNumber: "+5511999999999", // Número do WhatsApp para redirecionamento
+    whatsappNumber: "+5511988434718", // Número do WhatsApp para redirecionamento
     messageTemplate: `🏠 *NOVO LEAD - ANÁLISE DE CRÉDITO*
 
 👤 *Nome:* {nome}
