@@ -1,6 +1,6 @@
 // Configuração da aplicação
 const appConfig = {
-    whatsappNumber: "+5511988434718", // Número do WhatsApp para redirecionamento
+    whatsappNumber: "+5511988434718", // Número do WhatsApp correto
     messageTemplate: `🏠 *NOVO LEAD - ANÁLISE DE CRÉDITO*
 
 👤 *Nome:* {nome}
@@ -9,7 +9,7 @@ const appConfig = {
 💰 *Renda Mensal:* R$ {renda}
 🏦 *FGTS Disponível:* R$ {fgts}
 📍 *Bairro de Interesse:* {bairro}
-💵 *Valor para Entrada:* {entrada}`
+💵 *Valor para Entrada:* R$ {entrada}`
 };
 
 // Aguardar o DOM ser carregado
@@ -26,8 +26,9 @@ function initializeApp() {
     const celularInput = document.getElementById('celular');
     const rendaInput = document.getElementById('renda');
     const fgtsInput = document.getElementById('fgts');
+    const entradaInput = document.getElementById('entrada');
 
-    if (!form || !submitBtn || !celularInput || !rendaInput || !fgtsInput) {
+    if (!form || !submitBtn || !celularInput || !rendaInput || !fgtsInput || !entradaInput) {
         console.error('Elementos essenciais não encontrados no DOM');
         return;
     }
@@ -36,6 +37,7 @@ function initializeApp() {
     setupPhoneMask(celularInput);
     setupCurrencyFormatting(rendaInput);
     setupCurrencyFormatting(fgtsInput);
+    setupCurrencyFormatting(entradaInput); // Adicionar formatação para o campo entrada
     
     // Configurar validação em tempo real
     setupValidation();
@@ -109,6 +111,7 @@ function setupPhoneMask(input) {
         setTimeout(() => {
             const currentValue = e.target.value;
             e.target.value = applyPhoneMask(currentValue);
+            validatePhone(input);
         }, 10);
     });
 }
@@ -169,6 +172,7 @@ function setupCurrencyFormatting(input) {
         setTimeout(() => {
             const currentValue = e.target.value;
             e.target.value = applyCurrencyMask(currentValue);
+            validateCurrency(input);
         }, 10);
     });
 }
@@ -180,7 +184,7 @@ function extractCurrencyValue(formattedValue) {
     return parseInt(numbers) / 100;
 }
 
-// Validação de campos
+// Validação de campos - versão corrigida
 function validateField(field, minLength = 1) {
     if (!field) return false;
     
@@ -226,14 +230,14 @@ function validatePhone(field) {
         isValid = false;
         errorMessage = 'Digite um telefone válido (10 ou 11 dígitos)';
     } else if (value.length === 10) {
-        // Validar telefone fixo
-        if (!value.match(/^\d{2}[2-5]\d{7}$/)) {
+        // Validar telefone fixo - flexibilizar a validação
+        if (!value.match(/^\d{2}[2-9]\d{7}$/)) {
             isValid = false;
             errorMessage = 'Digite um telefone válido';
         }
     } else if (value.length === 11) {
-        // Validar celular
-        if (!value.match(/^\d{2}9\d{8}$/)) {
+        // Validar celular - flexibilizar a validação
+        if (!value.match(/^\d{2}[6-9]\d{8}$/)) {
             isValid = false;
             errorMessage = 'Digite um celular válido';
         }
@@ -285,6 +289,13 @@ function validateCurrency(field) {
                 errorMessage = 'Valor muito alto. Entre em contato diretamente';
             }
         }
+
+        if (field.name === 'entrada') {
+            if (value > 500000) {
+                isValid = false;
+                errorMessage = 'Valor muito alto. Entre em contato diretamente';
+            }
+        }
     }
     
     // Atualizar UI
@@ -303,22 +314,28 @@ function updateFieldValidation(field, errorElement, isValid, errorMessage) {
 }
 
 function setupValidation() {
-    const requiredFields = ['nome', 'celular', 'tipo_renda', 'renda', 'fgts', 'bairro'];
+    const requiredFields = ['nome', 'celular', 'tipo_renda', 'renda', 'fgts', 'bairro', 'entrada'];
     
     requiredFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
         if (!element) return;
         
-        // Validação ao sair do campo
+        // Validação ao sair do campo - com debounce
         element.addEventListener('blur', function() {
-            validateFieldByName(fieldName, element);
+            setTimeout(() => {
+                validateFieldByName(fieldName, element);
+            }, 100);
         });
         
         // Validação em tempo real (apenas se já teve erro)
         const event = element.tagName.toLowerCase() === 'select' ? 'change' : 'input';
         element.addEventListener(event, function() {
             if (element.classList.contains('error')) {
-                validateFieldByName(fieldName, element);
+                // Debounce para evitar validação muito frequente
+                clearTimeout(element.validationTimeout);
+                element.validationTimeout = setTimeout(() => {
+                    validateFieldByName(fieldName, element);
+                }, 300);
             }
         });
     });
@@ -327,7 +344,7 @@ function setupValidation() {
 function validateFieldByName(fieldName, element) {
     if (fieldName === 'celular') {
         return validatePhone(element);
-    } else if (fieldName === 'renda' || fieldName === 'fgts') {
+    } else if (fieldName === 'renda' || fieldName === 'fgts' || fieldName === 'entrada') {
         return validateCurrency(element);
     } else {
         return validateField(element, fieldName === 'nome' ? 2 : 1);
@@ -335,7 +352,7 @@ function validateFieldByName(fieldName, element) {
 }
 
 function validateCompleteForm() {
-    const requiredFields = ['nome', 'celular', 'tipo_renda', 'renda', 'fgts', 'bairro'];
+    const requiredFields = ['nome', 'celular', 'tipo_renda', 'renda', 'fgts', 'bairro', 'entrada'];
     let isFormValid = true;
     
     requiredFields.forEach(fieldName => {
@@ -377,7 +394,7 @@ function formatWhatsAppMessage(data) {
     message = message.replace('{renda}', data.renda); // Usar valor formatado
     message = message.replace('{fgts}', data.fgts); // Usar valor formatado
     message = message.replace('{bairro}', data.bairro);
-    message = message.replace('{entrada}', data.entrada || 'Não informado');
+    message = message.replace('{entrada}', data.entrada); // Usar valor formatado digitado
     
     return message;
 }
@@ -396,7 +413,16 @@ function openWhatsApp(message) {
         whatsappURL = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
     }
     
-    window.open(whatsappURL, '_blank');
+    // Tentar abrir WhatsApp
+    try {
+        window.open(whatsappURL, '_blank');
+        console.log('WhatsApp aberto com sucesso para:', phoneNumber);
+    } catch (error) {
+        console.error('Erro ao abrir WhatsApp:', error);
+        // Fallback: tentar com api.whatsapp.com
+        const fallbackURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+        window.open(fallbackURL, '_blank');
+    }
 }
 
 function showLoading(show, btnText, btnLoading, submitBtn) {
@@ -463,6 +489,11 @@ function setupFormSubmission(form, submitBtn, btnText, btnLoading) {
             
             // Formatar mensagem
             const message = formatWhatsAppMessage(data);
+            
+            // Log para debugging
+            console.log('Dados coletados:', data);
+            console.log('Mensagem formatada:', message);
+            console.log('Redirecionando para WhatsApp:', appConfig.whatsappNumber);
             
             // Mostrar mensagem de sucesso
             showMessage('success', '✅ Redirecionando para WhatsApp...');
